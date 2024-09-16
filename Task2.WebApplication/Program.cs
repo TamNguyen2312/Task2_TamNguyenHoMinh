@@ -41,6 +41,7 @@ namespace Task2.WebApplicationMVC
                 app.UseHsts();
             }
 
+            app.UseCors("corspolicy");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
