@@ -1,4 +1,8 @@
-namespace Task2.WebApplication
+using Microsoft.EntityFrameworkCore;
+using Task2.DAL;
+using Task2.DAL.Repositories;
+
+namespace Task2.WebApplicationMVC
 {
     public class Program
     {
@@ -8,6 +12,24 @@ namespace Task2.WebApplication
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //set up policy
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddPolicy("corspolicy", build =>
+                {
+                    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
+            //set up DB
+            builder.Services.AddDbContext<PubsContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("pubs"));
+            });
+
+            //set Unit Of Work
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 

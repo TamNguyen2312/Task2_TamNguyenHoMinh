@@ -1,4 +1,4 @@
-namespace Task2.WebApplication.Models
+namespace Task2.WebApplicationMVC.Models
 {
     public class ErrorViewModel
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.WebApplication", "Task2.WebApplication\Task2.WebApplication.csproj", "{B9FB1198-24B0-4D1E-B9AA-161C329445B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.WebApplicationMVC", "Task2.WebApplication\Task2.WebApplicationMVC.csproj", "{B9FB1198-24B0-4D1E-B9AA-161C329445B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2.DAL", "Task2.DAL\Task2.DAL.csproj", "{AEC20FA0-B1A5-4C54-B198-EBC41B0017D5}"
 EndProject
