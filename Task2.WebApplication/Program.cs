@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Task2.DAL;
 using Task2.DAL.Repositories;
+using Task2.WebApplicationMVC.Extensions;
 
 namespace Task2.WebApplicationMVC
 {
@@ -29,7 +30,10 @@ namespace Task2.WebApplicationMVC
             });
 
             //set Unit Of Work
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddUnitOfWork();
+
+            //set services
+            builder.Services.AddBLLServices();
 
             var app = builder.Build();
 
