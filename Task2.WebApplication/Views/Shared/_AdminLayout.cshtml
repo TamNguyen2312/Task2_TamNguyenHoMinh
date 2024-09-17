@@ -32,10 +32,6 @@
 </head>
 <body>
 
-	<div>
-		@RenderBody()
-	</div>
-
 	<!-- Side Bar -->
 	@await Html.PartialAsync("PartialSideBar")
 
@@ -47,12 +43,15 @@
 			<!-- Nav Bar -->
 			@await Html.PartialAsync("PartialNavBar")
 
+			<div>
+				@RenderBody()
+			</div>
+
 			<!-- Footer -->
 			@await Html.PartialAsync("PartialFooter")
 
 		</div>
 		<!-- Content End -->
-
 		<!-- Back to Top -->
 		<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 	</div>
