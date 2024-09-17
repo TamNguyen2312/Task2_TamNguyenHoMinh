@@ -29,6 +29,9 @@ namespace Task2.WebApplicationMVC
                 options.UseSqlServer(builder.Configuration.GetConnectionString("pubs"));
             });
 
+            //AutoMapper
+            builder.Services.AddMapper();
+
             //set Unit Of Work
             builder.Services.AddUnitOfWork();
 
