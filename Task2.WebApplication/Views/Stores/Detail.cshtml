@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "Stores Page";
+    ViewData["ActivePage"] = "Stores";
+}
+
+@model Task2.BLL.DTOs.StoreDTOs.StoreDetailDTO
+
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Store Details</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>ID: @Model.StorId</h5>
+                    <p><strong>Name:</strong> @Model.StorName</p>
+                    <p><strong>Address:</strong> @Model.StorAddress</p>
+                    <p><strong>City:</strong> @Model.City</p>
+                    <p><strong>State:</strong> @Model.State</p>
+                    <p><strong>ZIP:</strong> @Model.Zip</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

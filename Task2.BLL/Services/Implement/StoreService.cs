@@ -74,5 +74,26 @@ namespace Task2.BLL.Services.Implement
                 unitOfWork.Dispose();
             }
         }
-    }
+
+		public async Task<StoreDetailDTO> GetStoreByIdAsync(string id)
+		{
+			try
+			{
+				var store = await unitOfWork.GetRepo<Store>().GetSingle(x => x.StorId.Equals(id), null, false, x => x.Sales);
+                var storeResonse = mapper.Map<StoreDetailDTO>(store);
+                return storeResonse;
+			}
+			catch (Exception ex)
+			{
+				Console.ForegroundColor= ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return null;
+			}
+			finally
+			{
+				unitOfWork.Dispose();
+			}
+		}
+	}
 }

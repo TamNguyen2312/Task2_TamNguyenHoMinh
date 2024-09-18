@@ -17,5 +17,15 @@ namespace Task2.WebApplicationMVC.Controllers
 			ViewBag.Search = search;
 			return View(results);
 		}
+
+		public async Task<IActionResult> Detail([FromRoute]string id)
+		{
+			var results = await storesService.GetStoreByIdAsync(id);
+			if (results == null)
+			{
+				return Redirect("/404");
+			}
+			return View(results);
+		}
 	}
 }
