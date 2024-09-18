@@ -6,73 +6,77 @@
 			<h6 class="mb-4">STORES</h6>
 
 			<!-- Search start -->
-
 			<form asp-action="Index" method="get" class="d-none d-md-flex ms-4">
 				<input class="form-control border-0 w-25" type="search" placeholder="Search" name="search" value="@ViewBag.Search">
 			</form>
-
 			<!-- Search End -->
-
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Name</th>
-							<th scope="col">Address</th>
-							<th scope="col">City</th>
-							<th scope="col">State</th>
-							<th scope="col">ZIP</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var store in Model.StoreViewDTOs)
-						{
+			@if (!Model.StoreViewDTOs.Any())
+			{
+				<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+					<h6>No Store Found</h6>
+				</div>
+			}
+			else
+			{
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
 							<tr>
-								<th scope="row">@store.StorId</th>
-								<td>@store.StorName</td>
-								<td>@store.StorAddress</td>
-								<td>@store.City</td>
-								<td>@store.State</td>
-								<td>@store.Zip</td>
+								<th scope="col">ID</th>
+								<th scope="col">Name</th>
+								<th scope="col">Address</th>
+								<th scope="col">City</th>
+								<th scope="col">State</th>
+								<th scope="col">ZIP</th>
 							</tr>
+						</thead>
+						<tbody>
+							@foreach (var store in Model.StoreViewDTOs)
+							{
+								<tr>
+									<th scope="row">@store.StorId</th>
+									<td>@store.StorName</td>
+									<td>@store.StorAddress</td>
+									<td>@store.City</td>
+									<td>@store.State</td>
+									<td>@store.Zip</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Paging Start -->
+				<nav>
+					<ul class="pagination">
+						@if (Model.CurrentPage > 1)
+						{
+							<li class="page-item">
+								<a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchString=@ViewBag.Search" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
 						}
-					</tbody>
-				</table>
-			</div>
 
-			<!-- Paging Start -->
-			<nav>
-				<ul class="pagination">
-					@if (Model.CurrentPage > 1)
-					{
-						<li class="page-item">
-							<a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchString=@ViewBag.Search" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-							</a>
-						</li>
-					}
+						@for (var i = 1; i <= Model.TotalPages; i++)
+						{
+							<li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+								<a class="page-link" href="?page=@i&searchString=@ViewBag.Search">@i</a>
+							</li>
+						}
 
-					@for (var i = 1; i <= Model.TotalPages; i++)
-					{
-						<li class="page-item @(Model.CurrentPage == i ? "active" : "")">
-							<a class="page-link" href="?page=@i&searchString=@ViewBag.Search">@i</a>
-						</li>
-					}
-
-					@if (Model.CurrentPage < Model.TotalPages)
-					{
-						<li class="page-item">
-							<a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchString=@ViewBag.Search" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-							</a>
-						</li>
-					}
-				</ul>
-			</nav>
-			<!-- Paging End -->
-
+						@if (Model.CurrentPage < Model.TotalPages)
+						{
+							<li class="page-item">
+								<a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchString=@ViewBag.Search" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						}
+					</ul>
+				</nav>
+				<!-- Paging End -->
+			}
 		</div>
 	</div>
 </div>
-
