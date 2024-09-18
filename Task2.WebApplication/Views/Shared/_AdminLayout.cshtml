@@ -31,11 +31,13 @@
 	<link href="~/css/style.css" rel="stylesheet">
 </head>
 <body>
-
-	<!-- Side Bar -->
-	@await Html.PartialAsync("PartialSideBar")
-
 	<div class="container-fluid position-relative bg-white d-flex p-0">
+
+		<!-- Spinner -->
+		@await Html.PartialAsync("_PartialSpinner")
+
+		<!-- Side Bar -->
+		@await Html.PartialAsync("PartialSideBar")
 
 		<!-- Content Start -->
 		<div class="content">
