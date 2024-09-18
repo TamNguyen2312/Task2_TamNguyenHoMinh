@@ -11,9 +11,10 @@ namespace Task2.WebApplicationMVC.Controllers
         {
 			this.storesService = storesService;
 		}
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string search, int page = 1)
 		{
-			var results = await storesService.GetAllStoresAsync(page);
+			var results = await storesService.GetAllStoresAsync(search, page);
+			ViewBag.Search = search;
 			return View(results);
 		}
 	}
