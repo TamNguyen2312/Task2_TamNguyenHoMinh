@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Task2.BLL.DTOs.StoreDTOs;
+using Task2.BLL.Helpers.Extensions.Stores;
 using Task2.BLL.Helpers.Filters;
 using Task2.BLL.Helpers.Paging;
 using Task2.BLL.Services.Interface;
@@ -95,5 +96,38 @@ namespace Task2.BLL.Services.Implement
 				unitOfWork.Dispose();
 			}
 		}
-	}
+
+        public async Task<StoreDetailDTO> CreateStoreAsync(StoreCreateRequestDTO storeRequest)
+        {
+            try
+            {
+                using var transaction = unitOfWork.BeginTransactionAsync();
+
+                var storeRepo = unitOfWork.GetRepo<Store>();
+
+                string storeId;
+                do
+                {
+                    storeId = StoreExtensions.AutoGenerateStoreId();
+                } while (await storeRepo.GetSingle(s => s.StorId == storeId, null, false) != null);
+
+                var store = mapper.Map<Store>(storeRequest);
+                store.StorId = storeId;
+
+                var createResult = await unitOfWork.GetRepo<Store>().CreateAsync(store);
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitTransactionAsync();
+
+                return mapper.Map<StoreDetailDTO>(createResult);
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollBackAsync();
+                Console.ForegroundColor= ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+                return null;
+            }
+        }
+    }
 }

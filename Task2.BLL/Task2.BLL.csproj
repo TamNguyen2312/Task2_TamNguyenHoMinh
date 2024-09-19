@@ -16,9 +16,4 @@
     </ProjectReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\Extensions\" />
-    <Folder Include="Helpers\Validation\" />
-  </ItemGroup>
-
 </Project>
