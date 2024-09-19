@@ -8,7 +8,11 @@ namespace Task2.BLL.DTOs.StoreDTOs
 {
 	public class StoreListViewDTO
 	{
-		public IEnumerable<StoreViewDTO> StoreViewDTOs { get; set; }
+        public StoreListViewDTO()
+        {
+            StoreViewDTOs = new List<StoreViewDTO>();
+        }
+        public IEnumerable<StoreViewDTO> StoreViewDTOs { get; set; }
 		public int CurrentPage { get; set; }
 		public int TotalPages { get; set; }
 	}

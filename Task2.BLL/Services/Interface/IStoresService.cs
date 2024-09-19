@@ -9,6 +9,8 @@ namespace Task2.BLL.Services.Interface
 {
 	public interface IStoresService
 	{
-		Task<StoreListViewDTO> GetAllStoresAsync(int page);
+		Task<StoreListViewDTO> GetAllStoresAsync(string search, int page);
+		Task<StoreDetailDTO> GetStoreByIdAsync(string id);
+		Task<StoreDetailDTO> CreateStoreAsync(StoreCreateRequestDTO storeRequest);
 	}
 }

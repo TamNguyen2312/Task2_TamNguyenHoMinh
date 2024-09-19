@@ -23,6 +23,18 @@ namespace Task2.WebApplicationMVC.Controllers
             return View();
         }
 
+        [Route("/404")]
+        public IActionResult PageNotFound()
+        {
+            return View();
+        }
+
+        [Route("/400")]
+        public IActionResult PageBadRequest()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
