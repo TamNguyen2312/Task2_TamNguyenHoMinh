@@ -29,24 +29,42 @@ namespace Task2.WebApplicationMVC.Controllers
 			return View(results);
 		}
 
-		public async Task<IActionResult> Create(StoreCreateRequestDTO storeRequest)
+		[HttpGet]
+		public IActionResult Create()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Create(StoreCreateRequestDTO storeCreateRequest)
 		{
 			try
 			{
-				if(!ModelState.IsValid)
+                if (!ModelState.IsValid)
 				{
-					return Redirect("/400");
+					return View(storeCreateRequest);
 				}
-				var result = await storesService.CreateStoreAsync(storeRequest);
-				return View(result);
-			}
+				else
+				{
+					var result = await storesService.CreateStoreAsync(storeCreateRequest);
+					if(result == null)
+					{
+						return Redirect("/400");
+					}
+					else
+					{
+						return RedirectToAction("Detail", new {id = result.StorId});
+					}
+				}
+
+            }
 			catch (Exception ex)
 			{
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message.ToString());
-                Console.ResetColor();
-				return null;
-            }
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				return Redirect("/400");
+			}
 		}
 	}
 }
