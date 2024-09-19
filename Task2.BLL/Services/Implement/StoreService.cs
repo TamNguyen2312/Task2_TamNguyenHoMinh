@@ -154,7 +154,7 @@ namespace Task2.BLL.Services.Implement
             }
         }
 
-        public async Task DeleteStoreAsync(string id)
+        public async Task<bool> DeleteStoreAsync(string id)
         {
             try
             {
@@ -162,12 +162,21 @@ namespace Task2.BLL.Services.Implement
 
                 var storeRepo = unitOfWork.GetRepo<Store>();
                 var store = await storeRepo.GetSingle(x => x.StorId.Equals(id), null, true, x => x.Sales);
-                var storeDelete = mapper.Map<Store>(storeRequest);
 
-                await storeRepo.DeleteAsync(storeDelete);
+                if(store == null)
+                {
+                    throw new Exception("Store not found.");
+                }
 
+                if (store.Sales.Any())
+                {
+                    throw new Exception("Cannot delete store. There are associated sales.");
+                }
+
+                await storeRepo.DeleteAsync(store);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitTransactionAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -175,6 +184,7 @@ namespace Task2.BLL.Services.Implement
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message.ToString());
                 Console.ResetColor();
+                return false;
             }
         }
     }

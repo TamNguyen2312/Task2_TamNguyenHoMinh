@@ -60,6 +60,10 @@
                                         <a asp-controller="Stores" asp-action="Update" asp-route-id="@store.StorId" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i> Update
                                         </a>
+
+                                        <a asp-controller="Stores" asp-action="Delete" asp-route-id="@store.StorId" class="btn btn-danger btn-sm delete-button">
+                                            <i class="fa fa-delete"></i> Delete
+                                        </a>
                                     </td>
                                 </tr>
                             }

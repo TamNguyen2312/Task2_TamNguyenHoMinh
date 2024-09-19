@@ -115,19 +115,18 @@ namespace Task2.WebApplicationMVC.Controllers
             }
 		}
 
-		[HttpGet]
 		public async Task<IActionResult> Delete(string id)
 		{
             try
             {
-                var storeDetail = await storesService.GetStoreByIdAsync(id);
-                if (storeDetail == null)
+				var result = await storesService.DeleteStoreAsync(id); 
+                if (!result)
                 {
-                    return Redirect("/404");
+                    return Redirect("/400");
                 }
                 else
                 {
-                    return View(storeDetail);
+					return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)

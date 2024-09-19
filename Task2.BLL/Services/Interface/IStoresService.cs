@@ -13,6 +13,6 @@ namespace Task2.BLL.Services.Interface
 		Task<StoreDetailDTO> GetStoreByIdAsync(string id);
 		Task<StoreDetailDTO> CreateStoreAsync(StoreCreateRequestDTO storeRequest);
 		Task UpdateStoreAsync(StoreDetailDTO storeRequest);
-		Task DeleteStoreAsync(string id);
+		Task<bool> DeleteStoreAsync(string id);
 	}
 }
