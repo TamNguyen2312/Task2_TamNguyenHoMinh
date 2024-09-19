@@ -66,5 +66,77 @@ namespace Task2.WebApplicationMVC.Controllers
 				return Redirect("/400");
 			}
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Update(string id)
+		{
+			try
+			{
+				var store = await storesService.GetStoreByIdAsync(id);
+				if(store == null)
+				{
+					return Redirect("/404");
+				}
+				else
+				{
+					return View(store);
+				}
+			}
+			catch (Exception ex)
+			{
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return Redirect("/400");
+            }
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Update(StoreDetailDTO storeDetail)
+		{
+			try
+			{
+				if(!ModelState.IsValid)
+				{
+					return View(storeDetail);
+				}
+				else
+				{
+					await storesService.UpdateStoreAsync(storeDetail);
+					return RedirectToAction("Detail", new { id = storeDetail.StorId });
+				}
+			}
+			catch (Exception ex)
+			{
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return Redirect("/400");
+            }
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Delete(string id)
+		{
+            try
+            {
+                var storeDetail = await storesService.GetStoreByIdAsync(id);
+                if (storeDetail == null)
+                {
+                    return Redirect("/404");
+                }
+                else
+                {
+                    return View(storeDetail);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return Redirect("/400");
+            }
+        }
 	}
 }

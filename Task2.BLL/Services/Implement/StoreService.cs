@@ -129,5 +129,53 @@ namespace Task2.BLL.Services.Implement
                 return null;
             }
         }
+
+        public async Task UpdateStoreAsync(StoreDetailDTO storeRequest)
+        {
+            try
+            {
+                using var transaction = unitOfWork.BeginTransactionAsync();
+
+                var storeRepo = unitOfWork.GetRepo<Store>();
+
+                var storeUpdate = mapper.Map<Store>(storeRequest);
+
+                await storeRepo.UpdateAsync(storeUpdate);
+
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollBackAsync();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+            }
+        }
+
+        public async Task DeleteStoreAsync(string id)
+        {
+            try
+            {
+                using var transaction = unitOfWork.BeginTransactionAsync();
+
+                var storeRepo = unitOfWork.GetRepo<Store>();
+                var store = await storeRepo.GetSingle(x => x.StorId.Equals(id), null, true, x => x.Sales);
+                var storeDelete = mapper.Map<Store>(storeRequest);
+
+                await storeRepo.DeleteAsync(storeDelete);
+
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollBackAsync();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+            }
+        }
     }
 }

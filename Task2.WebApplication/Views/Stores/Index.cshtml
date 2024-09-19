@@ -41,6 +41,7 @@
                                 <th scope="col">City</th>
                                 <th scope="col">State</th>
                                 <th scope="col">ZIP</th>
+                                <th scope="col">Tools</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,6 +56,11 @@
                                     <td>@store.City</td>
                                     <td>@store.State</td>
                                     <td>@store.Zip</td>
+                                    <td>
+                                        <a asp-controller="Stores" asp-action="Update" asp-route-id="@store.StorId" class="btn btn-sm btn-warning">
+                                            <i class="fa fa-edit"></i> Update
+                                        </a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
