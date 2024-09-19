@@ -14,7 +14,7 @@
 				<input class="form-control border-0 w-25" type="search" placeholder="Search" name="search" value="@ViewBag.Search">
 			</form>
 			<!-- Search End -->
-			@if (!Model.StoreViewDTOs.Any())
+			@if (Model?.StoreViewDTOs == null || !Model.StoreViewDTOs.Any())
 			{
 				<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
 					<h6>No Store Found</h6>
