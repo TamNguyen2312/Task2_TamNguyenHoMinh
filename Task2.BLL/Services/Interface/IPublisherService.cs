@@ -10,5 +10,6 @@ namespace Task2.BLL.Services.Interface
 	public interface IPublisherService
 	{
 		Task<IEnumerable<PublisherViewDTO>> GetComboboxPublisher();
+		Task<PublisherDetailDTO> GetPublisherByIdAsync(string id);
 	}
 }

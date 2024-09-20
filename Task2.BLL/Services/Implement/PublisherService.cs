@@ -31,5 +31,16 @@ namespace Task2.BLL.Services.Implement
 			return responsePubs;
 			
 		}
+
+		public async Task<PublisherDetailDTO> GetPublisherByIdAsync(string id)
+		{
+			var pubRepo = unitOfWork.GetRepo<Publisher>();
+			var pub = await pubRepo.GetSingle(x => x.PubId.Equals(id), null, true);
+			if (pub == null)
+			{
+				return null;
+			}
+			return mapper.Map<PublisherDetailDTO>(pub);
+		}
 	}
 }
