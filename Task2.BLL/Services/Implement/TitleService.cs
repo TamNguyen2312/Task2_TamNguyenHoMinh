@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Task2.BLL.DTOs.StoreDTOs;
 using Task2.BLL.DTOs.TitleDTOs;
+using Task2.BLL.Helpers.Extensions.Titles;
 using Task2.BLL.Helpers.Filters;
 using Task2.BLL.Helpers.Paging;
 using Task2.BLL.Services.Interface;
@@ -66,5 +67,37 @@ namespace Task2.BLL.Services.Implement
             unitOfWork.Dispose();
             return titleResonse;
         }
-    }
+
+		public async Task<TitleDetailDTO> CreateTitleAsync(TitleCreateRequestDTO titleRequest)
+		{
+            try
+            {
+				using var transaction = unitOfWork.BeginTransactionAsync();
+
+				var titleRepo = unitOfWork.GetRepo<Title>();
+
+				string titleId;
+                do
+                {
+                    titleId = TitleExtensions.GenerateTitleId(titleRequest.Type.ToString());
+                } while (await titleRepo.GetSingle(s => s.TitleId == titleId) != null);
+
+				var title = mapper.Map<Title>(titleRequest);
+				title.TitleId = titleId;
+
+				var createResult = await titleRepo.CreateAsync(title);
+				await unitOfWork.SaveChangesAsync();
+				await unitOfWork.CommitTransactionAsync();
+                return mapper.Map<TitleDetailDTO>(createResult);
+			}
+            catch (Exception ex)
+            {
+				await unitOfWork.RollBackAsync();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+                return null;
+			}
+		}
+	}
 }
