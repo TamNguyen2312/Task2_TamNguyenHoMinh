@@ -16,9 +16,39 @@ namespace Task2.WebApplicationMVC.Controllers
 
         public async Task<IActionResult> Index(string search, int page = 1)
         {
-            var results = await titleService.GetAllTitlesAsync(search, page);
-            ViewBag.Search = search;
-            return View(results);
+            try
+            {
+				var results = await titleService.GetAllTitlesAsync(search, page);
+				ViewBag.Search = search;
+				return View(results);
+			}
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+                return Redirect("/400");
+            }
+        }
+
+        public async Task<IActionResult> Detail([FromRoute] string id)
+        {
+            try
+            {
+				var results = await titleService.GetTitleByIdAsync(id);
+				if (results == null)
+				{
+					return Redirect("/404");
+				}
+				return View(results);
+			}
+            catch (Exception ex)
+            {
+                Console.ForegroundColor= ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+                return Redirect("/400");
+            }
         }
     }
 }

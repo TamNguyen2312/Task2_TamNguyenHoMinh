@@ -50,12 +50,21 @@ namespace Task2.BLL.Services.Implement
 
             var results = mapper.Map<List<TitleViewDTO>>(titles);
             var pageResults = PaginatedList<TitleViewDTO>.Create(results, page, PAGE_SIZE);
+            unitOfWork.Dispose();
             return new TitleListViewDTO
             {
                 TitleViewDTOs = pageResults,
                 CurrentPage = page,
                 TotalPages = pageResults.TotalPage
             };
+        }
+
+        public async Task<TitleDetailDTO> GetTitleByIdAsync(string id)
+        {
+            var title = await unitOfWork.GetRepo<Title>().GetSingle(x => x.TitleId.Equals(id), null, false, x => x.Sales, x => x.Titleauthors);
+            var titleResonse = mapper.Map<TitleDetailDTO>(title);
+            unitOfWork.Dispose();
+            return titleResonse;
         }
     }
 }
