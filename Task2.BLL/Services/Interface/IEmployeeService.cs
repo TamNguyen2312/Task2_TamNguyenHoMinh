@@ -10,5 +10,6 @@ namespace Task2.BLL.Services.Interface
 	public interface IEmployeeService
 	{
 		public Task<EmployeeListViewDTO> GetAllEmployeeAsync(string search, int page);
+		public Task<EmployeeDetailDTO> GetEmployeeById(string id);
 	}
 }

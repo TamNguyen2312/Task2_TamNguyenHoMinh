@@ -60,5 +60,16 @@ namespace Task2.BLL.Services.Implement
 				TotalPages = pageResults.TotalPage,
 			};
 		}
+
+		public async Task<EmployeeDetailDTO> GetEmployeeById(string id)
+		{
+			var empRepo = unitOfWork.GetRepo<Employee>();
+
+			var emp = await empRepo.GetSingle(x => x.EmpId.Equals(id), null, false, 
+												x => x.Pub, x => x.Job);
+
+			var empResponse = mapper.Map<EmployeeDetailDTO>(emp);
+			return empResponse;
+		}
 	}
 }

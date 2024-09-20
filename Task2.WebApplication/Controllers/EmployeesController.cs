@@ -28,5 +28,26 @@ namespace Task2.WebApplicationMVC.Controllers
 				return Redirect("/400");
 			}
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Detail([FromRoute] string id)
+		{
+			try
+			{
+				var results = await employeeService.GetEmployeeById(id);
+				if (results == null)
+				{
+					return Redirect("/404");
+				}
+				return View(results);
+			}
+			catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message.ToString());
+				Console.ResetColor();
+				return Redirect("/400");
+			}
+		}
 	}
 }
