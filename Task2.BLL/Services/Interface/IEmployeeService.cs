@@ -12,5 +12,8 @@ namespace Task2.BLL.Services.Interface
 		public Task<EmployeeListViewDTO> GetAllEmployeeAsync(string search, int page);
 		public Task<EmployeeDetailDTO> GetEmployeeById(string id);
         public Task<EmployeeDetailDTO> CreateEmployeeAsync(EmployeeCreateRequestDTO empRequest);
+        public Task<EmployeeDetailDTO> UpdateEmployeeAsync(EmployeeDetailDTO empRequest);
+        public Task<bool> DeleteEmployeeAsync(EmployeeDetailDTO empRequest);
+
     }
 }

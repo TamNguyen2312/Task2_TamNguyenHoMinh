@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Task2.BLL.DTOs.EmployeeDTOs;
+using Task2.BLL.DTOs.TitleDTOs;
 using Task2.BLL.Helpers.Extensions.Exceptions;
 using Task2.BLL.Services.Implement;
 using Task2.BLL.Services.Interface;
@@ -114,11 +115,122 @@ namespace Task2.WebApplicationMVC.Controllers
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine(ex.Message.ToString());
 				Console.ResetColor();
-				TempData["ErrorMessage"] = "The procees have any errors. Please try again after a few minute";
+				TempData["ErrorMessage"] = "The procees have any errors. Please try again after a few minutes.";
 				return Redirect("/400");
 			}
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> Update(string id)
+		{
+			try
+			{
+				var emp = await employeeService.GetEmployeeById(id);
+				if (emp == null)
+				{
+					TempData["ErrorMessage"] = "Employee not found";
+					return Redirect("/404");
+				}
+				else
+				{
+					await LoadDataToForm();
+					return View(emp);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				TempData["ErrorMessage"] = "The procees have any errors. Please try again after a few minutes.";
+				return Redirect("/400");
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Update(EmployeeDetailDTO empRequest)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					await LoadDataToForm();
+					return View(empRequest);
+				}
+
+				var job = await jobService.GetJobByIdAsync(empRequest.JobId);
+				if (job == null)
+				{
+					empRequest.JobId = 1;
+					empRequest.JobLvl = 10;
+				}
+				else
+				{
+
+					if (empRequest.JobLvl < job.MinLvl || empRequest.JobLvl > job.MaxLvl)
+					{
+						ModelState.AddModelError("JobLvl", $"Job Id {empRequest.JobId} has the range of Job level from {job.MinLvl} to {job.MaxLvl}");
+						await LoadDataToForm();
+						return View(empRequest);
+					}
+
+				}
+
+				var publisher = await publisherService.GetPublisherByIdAsync(empRequest.PubId);
+				if (publisher == null)
+				{
+					empRequest.PubId = "9952";
+				}
+
+				var result = await employeeService.UpdateEmployeeAsync(empRequest);
+				if (result == null)
+				{
+					return Redirect("/400");
+				}
+				else
+				{
+					return RedirectToAction("Detail", new { id = result.EmpId });
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				TempData["ErrorMessage"] = "The procees have any errors. Please try again after a few minutes.";
+				return Redirect("/400");
+			}
+		}
+
+		public async Task<IActionResult> Delete(string id)
+		{
+			try
+			{
+				var emp = await employeeService.GetEmployeeById(id);
+				if (emp == null)
+				{
+					TempData["ErrorMessage"] = "Employee Not Found";
+					return Redirect("/404");
+				}
+
+				var result = await employeeService.DeleteEmployeeAsync(emp);
+				if (!result)
+				{
+					TempData["ErrorMessage"] = "Deleted Title Failed";
+					return Redirect("/400");
+				}
+
+				return RedirectToAction("Index");
+			}
+			catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				TempData["ErrorMessage"] = "The procees have any errors. Please try again after a few minutes.";
+				return Redirect("/400");
+			}
+		}
 		private async Task LoadDataToForm()
 		{
 			var publishers = await publisherService.GetComboboxPublisher();

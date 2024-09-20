@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task2.BLL.Helpers.Extensions.Employees;
 
 namespace Task2.BLL.DTOs.EmployeeDTOs
 {
@@ -23,12 +24,13 @@ namespace Task2.BLL.DTOs.EmployeeDTOs
 		public string Lname { get; set; } = null!;
 
 		[Required(ErrorMessage = "Gender is required")]
-		public string Gender { get; set; } = null!;
+		public EmpGender Gender { get; set; }
 
 		[Required(ErrorMessage = "Job ID is required")]
 		public short JobId { get; set; }
 
 		[Range(1, 255, ErrorMessage = "Job level must be between 1 and 255")]
+		[Required(ErrorMessage = "Job level is required")]
 		public byte? JobLvl { get; set; }
 
 		[Required(ErrorMessage = "Publisher ID is required")]

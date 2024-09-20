@@ -110,5 +110,49 @@ namespace Task2.BLL.Services.Implement
             }
         }
 
-    }
+		public async Task<EmployeeDetailDTO> UpdateEmployeeAsync(EmployeeDetailDTO empRequest)
+		{
+			try
+			{
+				using var transaction = unitOfWork.BeginTransactionAsync();
+
+				var empRepo = unitOfWork.GetRepo<Employee>();
+
+				var empUpdate = mapper.Map<Employee>(empRequest);
+				empUpdate.Minit = empUpdate.Minit?.ToUpper();
+
+				await empRepo.UpdateAsync(empUpdate);
+
+				await unitOfWork.SaveChangesAsync();
+				await unitOfWork.CommitTransactionAsync();
+				return mapper.Map<EmployeeDetailDTO>(empUpdate);
+			}
+			catch (Exception)
+			{
+				await unitOfWork.RollBackAsync();
+                return null;
+				throw;
+			}
+		}
+
+		public async Task<bool> DeleteEmployeeAsync(EmployeeDetailDTO empRequest)
+		{
+			try
+			{
+				using var transaction = unitOfWork.BeginTransactionAsync();
+				var empRepo = unitOfWork.GetRepo<Employee>();
+				var empDelete = mapper.Map<Employee>(empRequest);
+				await empRepo.DeleteAsync(empDelete);
+				await unitOfWork.SaveChangesAsync();
+				await unitOfWork.CommitTransactionAsync();
+				return true;
+			}
+			catch (Exception)
+			{
+				await unitOfWork.RollBackAsync();
+				return false;
+                throw;
+			}
+		}
+	}
 }
