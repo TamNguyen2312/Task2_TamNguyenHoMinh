@@ -51,11 +51,11 @@
                                     <th scope="row">
                                         <a asp-controller="Stores" asp-action="Detail" asp-route-id="@store.StorId">@store.StorId</a>
                                     </th>
-                                    <td>@store.StorName</td>
-                                    <td>@store.StorAddress</td>
-                                    <td>@store.City</td>
-                                    <td>@store.State</td>
-                                    <td>@store.Zip</td>
+                                    <td>@(store.StorName ?? "Empty")</td>
+                                    <td>@(store.StorAddress ?? "Empty")</td>
+                                    <td>@(store.City ?? "Empty")</td>
+                                    <td>@(store.State ?? "Empty")</td>
+                                    <td>@(store.Zip ?? "Empty")</td>
                                     <td>
                                         <a asp-controller="Stores" asp-action="Update" asp-route-id="@store.StorId" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i> Update

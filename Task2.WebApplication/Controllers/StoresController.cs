@@ -119,7 +119,19 @@ namespace Task2.WebApplicationMVC.Controllers
 		{
             try
             {
-				var result = await storesService.DeleteStoreAsync(id); 
+				var store = await storesService.GetStoreByIdAsync(id);
+				if(store == null)
+				{
+					return Redirect("/404");
+				}
+
+				if(store.Sales.Any())
+				{
+					TempData["ErrorMessage"] = "Cannot delete store. There are asscoiated sales";
+					return Redirect("/400");
+				}
+
+				var result = await storesService.DeleteStoreAsync(store); 
                 if (!result)
                 {
                     return Redirect("/400");

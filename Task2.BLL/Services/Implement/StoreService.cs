@@ -154,25 +154,14 @@ namespace Task2.BLL.Services.Implement
             }
         }
 
-        public async Task<bool> DeleteStoreAsync(string id)
+        public async Task<bool> DeleteStoreAsync(StoreDetailDTO storeRequest)
         {
             try
             {
                 using var transaction = unitOfWork.BeginTransactionAsync();
 
                 var storeRepo = unitOfWork.GetRepo<Store>();
-                var store = await storeRepo.GetSingle(x => x.StorId.Equals(id), null, true, x => x.Sales);
-
-                if(store == null)
-                {
-                    throw new Exception("Store not found.");
-                }
-
-                if (store.Sales.Any())
-                {
-                    throw new Exception("Cannot delete store. There are associated sales.");
-                }
-
+                var store = mapper.Map<Store>(storeRequest);
                 await storeRepo.DeleteAsync(store);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitTransactionAsync();
