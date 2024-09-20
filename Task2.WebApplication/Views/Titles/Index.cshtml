@@ -54,15 +54,15 @@
 									<th scope="row">
 										<a asp-controller="Titles" asp-action="Detail" asp-route-id="@title.TitleId">@title.TitleId</a>
 									</th>
-									<td>@title.Title1</td>
-									<td>@title.Type</td>
-									<td>@title.PubId</td>
-									<td>@title.Price</td>
-									<td>@title.Advance</td>
-									<td>@title.Royalty</td>
-									<td>@title.YtdSales</td>
-									<td>@title.Notes</td>
-									<td>@title.Pubdate.ToString("dd/MM/yyyy")</td>
+									<td>@(title.Title1 ?? "Empty")</td>
+									<td>@(title.Type ?? "Empty")</td>
+									<td>@(title.PubId ?? "Empty")</td>
+									<td>@(title.Price?.ToString() ?? "Empty")</td>
+									<td>@(title.Advance?.ToString() ?? "Empty")</td>
+									<td>@(title.Royalty?.ToString() ?? "Empty")</td>
+									<td>@(title.YtdSales?.ToString() ?? "Empty")</td>
+									<td>@(title.Notes ?? "Empty")</td>
+									<td>@(title.Pubdate.ToString("dd/MM/yyyy") ?? "Empty")</td>
 
 									<td>
 										<a asp-controller="Titles" asp-action="Update" asp-route-id="@title.TitleId" class="btn btn-sm btn-warning">
