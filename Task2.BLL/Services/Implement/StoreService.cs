@@ -70,10 +70,6 @@ namespace Task2.BLL.Services.Implement
                 Console.ResetColor();
                 return null;
             }
-            finally
-            {
-                unitOfWork.Dispose();
-            }
         }
 
 		public async Task<StoreDetailDTO> GetStoreByIdAsync(string id)
@@ -90,10 +86,6 @@ namespace Task2.BLL.Services.Implement
                 Console.WriteLine(ex.Message);
                 Console.ResetColor();
                 return null;
-			}
-			finally
-			{
-				unitOfWork.Dispose();
 			}
 		}
 
