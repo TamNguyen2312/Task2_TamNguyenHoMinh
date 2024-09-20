@@ -92,5 +92,61 @@ namespace Task2.WebApplicationMVC.Controllers
                 return Redirect("/400");
             }
 		}
+
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
+        {
+            try
+            {
+                var title = await titleService.GetTitleByIdAsync(id);
+                if(title == null)
+                {
+                    return Redirect("/404");
+                }
+                else
+                {
+					var publishers = await publisherService.GetComboboxPublisher();
+					ViewBag.PublisherList = new SelectList(publishers, "PubId", "PubName");
+					return View(title);
+                }
+            }
+            catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				return Redirect("/400");
+			}
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(TitleDetailDTO title)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+					var publishers = await publisherService.GetComboboxPublisher();
+					ViewBag.PublisherList = new SelectList(publishers, "PubId", "PubName");
+					return View(title);
+                }
+				var result = await titleService.UpdateTitleAsync(title);
+				if (result == null)
+				{
+					return Redirect("/400");
+				}
+				else
+				{
+					return RedirectToAction("Detail", new { id = result.TitleId });
+				}
+			}
+            catch (Exception ex)
+            {
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				return Redirect("/400");
+			}
+        }
 	}
 }

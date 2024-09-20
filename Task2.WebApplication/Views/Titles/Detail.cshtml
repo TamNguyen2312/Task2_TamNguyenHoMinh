@@ -22,11 +22,11 @@
                     <p><strong>Note:</strong> @Model.Notes</p>
                     <p><strong>Published Date:</strong> @Model.Pubdate.ToString("dd/MM/yyyy")</p>
 
-                    <a asp-controller="Stores" asp-action="Update" asp-route-id="@Model.TitleId" class="btn btn-sm btn-warning">
+                    <a asp-controller="Titles" asp-action="Update" asp-route-id="@Model.TitleId" class="btn btn-sm btn-warning">
                         <i class="fa fa-edit"></i> Update
                     </a>
 
-                    <a asp-controller="Stores" asp-action="Delete" asp-route-id="@Model.TitleId" class="btn btn-danger btn-sm delete-button">
+                    <a asp-controller="Titles" asp-action="Delete" asp-route-id="@Model.TitleId" class="btn btn-danger btn-sm delete-button">
                         <i class="fa fa-trash"></i> Delete
                     </a>
 

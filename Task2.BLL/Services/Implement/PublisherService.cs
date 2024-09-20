@@ -28,7 +28,6 @@ namespace Task2.BLL.Services.Implement
 			var pubs = await publisherRepo.GetAllAsync(null, x => x.OrderBy(y => y.PubName), false);
 
 			var responsePubs = mapper.Map<List<PublisherViewDTO>>(pubs);
-			unitOfWork.Dispose();
 			return responsePubs;
 			
 		}

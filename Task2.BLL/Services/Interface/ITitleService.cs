@@ -12,5 +12,6 @@ namespace Task2.BLL.Services.Interface
         public Task<TitleListViewDTO> GetAllTitlesAsync(string search, int page);
         public Task<TitleDetailDTO> GetTitleByIdAsync(string id);
         public Task<TitleDetailDTO> CreateTitleAsync(TitleCreateRequestDTO titleRequest);
+        public Task<TitleDetailDTO> UpdateTitleAsync(TitleDetailDTO titleRequest);
     }
 }

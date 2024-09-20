@@ -26,9 +26,8 @@ namespace Task2.BLL.DTOs.TitleDTOs
         public string Title1 { get; set; } = null!;
 
         [Required(ErrorMessage = "Type is required")]
-        [TypeValid(typeof(TitleTypes))]
         [Display(Name = "Type")]
-        public string Type { get; set; } = null!;
+        public TitleTypes Type { get; set; }
 
         [StringLength(4, ErrorMessage = "PubId cannot be longer than 4 characters")]
         [Display(Name = "Publisher")]

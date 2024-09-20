@@ -51,7 +51,6 @@ namespace Task2.BLL.Services.Implement
 
             var results = mapper.Map<List<TitleViewDTO>>(titles);
             var pageResults = PaginatedList<TitleViewDTO>.Create(results, page, PAGE_SIZE);
-            unitOfWork.Dispose();
             return new TitleListViewDTO
             {
                 TitleViewDTOs = pageResults,
@@ -64,7 +63,6 @@ namespace Task2.BLL.Services.Implement
         {
             var title = await unitOfWork.GetRepo<Title>().GetSingle(x => x.TitleId.Equals(id), null, false, x => x.Sales, x => x.Titleauthors);
             var titleResonse = mapper.Map<TitleDetailDTO>(title);
-            unitOfWork.Dispose();
             return titleResonse;
         }
 
@@ -96,6 +94,31 @@ namespace Task2.BLL.Services.Implement
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message.ToString());
                 Console.ResetColor();
+                return null;
+			}
+		}
+
+		public async Task<TitleDetailDTO> UpdateTitleAsync(TitleDetailDTO titleRequest)
+		{
+			try
+            {
+				using var transaction = unitOfWork.BeginTransactionAsync();
+
+				var titleRepo = unitOfWork.GetRepo<Title>();
+
+                var titleUpdate = mapper.Map<Title>(titleRequest);
+                await titleRepo.UpdateAsync(titleUpdate);
+
+				await unitOfWork.SaveChangesAsync();
+				await unitOfWork.CommitTransactionAsync();
+                return mapper.Map<TitleDetailDTO>(titleUpdate);
+			}
+            catch (Exception ex)
+            {
+				await unitOfWork.RollBackAsync();
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message.ToString());
+				Console.ResetColor();
                 return null;
 			}
 		}

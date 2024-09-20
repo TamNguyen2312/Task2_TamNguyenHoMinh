@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Update";
+    ViewData["ActivePage"] = "Titles";
+}
+
+@using Task2.BLL.Helpers.Extensions.Titles
+@model Task2.BLL.DTOs.TitleDTOs.TitleDetailDTO
+
+@* Form start *@
+<div class="container-fluid pt-4 px-4">
+	<div class="col-sm-12 col-xl-6">
+		<div class="bg-light rounded h-100 p-4">
+			<h6 class="mb-4">Update Title</h6>
+			<form asp-controller="Titles" asp-action="Update">
+				<input type="hidden" asp-for="@Model.TitleId" />
+				<div class="row mb-3">
+					<label asp-for="@Model.Title1" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.Title1" class="form-control">
+						<span asp-validation-for="@Model.Title1" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.Type" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<select asp-for="@Model.Type" class="form-control">
+							<option value="">Select Type</option>
+							@foreach (var type in Enum.GetValues(typeof(TitleTypes)))
+							{
+								<option value="@type">@type</option>
+							}
+						</select>
+						<span asp-validation-for="@Model.Type" class="text-danger"></span>
+					</div>
+				</div>
+
+
+
+
+
+				<div class="row mb-3">
+					<label asp-for="@Model.Price" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.Price" class="form-control">
+						<span asp-validation-for="@Model.Price" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.Advance" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.Advance" class="form-control">
+						<span asp-validation-for="@Model.Advance" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.Royalty" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.Royalty" class="form-control">
+						<span asp-validation-for="@Model.Royalty" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.YtdSales" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.YtdSales" class="form-control">
+						<span asp-validation-for="@Model.YtdSales" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.Notes" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.Notes" class="form-control">
+						<span asp-validation-for="@Model.Notes" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.Pubdate" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<input asp-for="@Model.Pubdate" class="form-control">
+						<span asp-validation-for="@Model.Pubdate" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label asp-for="@Model.PubId" class="col-sm-2 col-form-label"></label>
+					<div class="col-sm-10">
+						<select asp-for="@Model.PubId" class="form-control" asp-items="ViewBag.PublisherList">
+							<option value="">-- Select Publisher --</option>
+						</select>
+						<span asp-validation-for="@Model.PubId" class="text-danger"></span>
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Save</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+@* Form End *@
+
