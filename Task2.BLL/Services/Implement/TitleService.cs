@@ -122,5 +122,27 @@ namespace Task2.BLL.Services.Implement
                 return null;
 			}
 		}
+
+		public async Task<bool> DeleteTitleAsync(TitleDetailDTO titleRequest)
+		{
+            try
+            {
+                using var transaction = unitOfWork.BeginTransactionAsync();
+                var titleRepo = unitOfWork.GetRepo<Title>();
+                var titleDelte = mapper.Map<Title>(titleRequest);
+				await titleRepo.DeleteAsync(titleDelte);
+				await unitOfWork.SaveChangesAsync();
+				await unitOfWork.CommitTransactionAsync();
+				return true;
+			}
+            catch (Exception ex)
+            {
+				await unitOfWork.RollBackAsync();
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message.ToString());
+				Console.ResetColor();
+				return false;
+			}
+		}
 	}
 }

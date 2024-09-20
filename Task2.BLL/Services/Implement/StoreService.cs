@@ -39,7 +39,7 @@ namespace Task2.BLL.Services.Implement
                     var predicate = FilterHelper.BuildSearchExpression<Store>(search);
 
                     stores = await storeRepo.GetAllAsync(predicate,
-                        r => r.OrderBy(q => q.StorName),
+                        r => r.OrderBy(q => q.StorId),
                         false
                     );
                 }
@@ -48,7 +48,7 @@ namespace Task2.BLL.Services.Implement
 
                     stores = await storeRepo.GetAllAsync(
                         null,
-                        r => r.OrderBy(q => q.StorName),
+                        r => r.OrderBy(q => q.StorId),
                         false
                     );
 
