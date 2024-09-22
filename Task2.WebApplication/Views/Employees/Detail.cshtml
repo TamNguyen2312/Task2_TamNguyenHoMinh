@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    ViewData["ActivePage"] = "Employees";
+}
+@model Task2.BLL.DTOs.EmployeeDTOs.EmployeeDetailDTO
+
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Employee Details</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>ID: @Model.EmpId</h5>
+                    <p><strong>First Name:</strong> @Model.Fname</p>
+                    <p><strong>Minit:</strong> @Model.Minit</p>
+                    <p><strong>LastName:</strong> @Model.Lname</p>
+                    <p><strong>Job:</strong> @Model.JobId</p>
+                    <p><strong>Job Level:</strong> @Model.JobLvl</p>
+                    <p><strong>Publisher:</strong> @Model.PubId</p>
+                    <p><strong>Hire Date:</strong> @Model.HireDate.ToString("dd/MM/yyyy")</p>
+
+                    <a asp-controller="Employees" asp-action="Update" asp-route-id="@Model.EmpId" class="btn btn-sm btn-warning">
+                        <i class="fa fa-edit"></i> Update
+                    </a>
+
+                    <a asp-controller="Employees" asp-action="Delete" asp-route-id="@Model.EmpId" class="btn btn-danger btn-sm delete-button">
+                        <i class="fa fa-trash"></i> Delete
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

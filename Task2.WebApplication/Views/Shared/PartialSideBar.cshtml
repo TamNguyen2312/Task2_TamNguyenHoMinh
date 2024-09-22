@@ -17,17 +17,8 @@
         <div class="navbar-nav w-100">
             <a asp-controller="Home" asp-action="Index" class="nav-item nav-link @(ViewData["ActivePage"].ToString() == "Home" ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
             <a asp-action="Index" asp-controller="Stores" class="nav-item nav-link @(ViewData["ActivePage"].ToString() == "Stores" ? "active" : "")"><i class="fa fa-store me-2"></i>Stores</a>
-            <a href="#" class="nav-item nav-link @*  @(ViewData["ActivePage"].ToString() == "Titles" ? "active" : "")*@"><i class="fa fa-tag me-2"></i>Titles</a>
-            <a href="#" class="nav-item nav-link @* @(ViewData["ActivePage"].ToString() == "Employees" ? "active" : "") *@"><i class="fa fa-users me-2"></i>Employees</a>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
-                <div class="dropdown-menu bg-transparent border-0">
-                    <a href="signin.html" class="dropdown-item">Sign In</a>
-                    <a href="signup.html" class="dropdown-item">Sign Up</a>
-                    <a href="404.html" class="dropdown-item">404 Error</a>
-                    <a href="blank.html" class="dropdown-item">Blank Page</a>
-                </div>
-            </div>
+            <a asp-controller="Titles" asp-action="Index" class="nav-item nav-link @(ViewData["ActivePage"].ToString() == "Titles" ? "active" : "")"><i class="fa fa-tag me-2"></i>Titles</a>
+            <a asp-controller="Employees" asp-action="Index" class="nav-item nav-link @(ViewData["ActivePage"].ToString() == "Employees" ? "active" : "") "><i class="fa fa-users me-2"></i>Employees</a>
         </div>
 
     </nav>

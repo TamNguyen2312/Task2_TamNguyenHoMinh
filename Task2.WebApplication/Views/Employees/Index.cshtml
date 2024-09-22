@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    ViewData["ActivePage"] = "Employees";
+}
+@model Task2.BLL.DTOs.EmployeeDTOs.EmployeeListViewDTO
+
+<div class="container-fluid pt-4 px-4">
+	<div class="col-12">
+		<div class="bg-light rounded h-100 p-4">
+			<h6 class="mb-4">EMPLOYEES</h6>
+
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<!-- Search start -->
+				<form asp-action="Index" method="get" class="d-flex">
+					<input class="form-control border-0" type="search" placeholder="Search" name="search" value="@ViewBag.Search" style="width: 250px;">
+				</form>
+				<!-- Search End -->
+				<!-- Create Button Start -->
+				<a asp-controller="Employees" asp-action="Create" method="get" class="btn btn-primary">
+					<i class="fa fa-plus"></i> Create Employee
+				</a>
+				<!-- Create Button End -->
+			</div>
+
+			@if (Model?.EmployeeViewDTOs == null || !Model.EmployeeViewDTOs.Any())
+			{
+				<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+					<h6>No Employee Found</h6>
+				</div>
+			}
+			else
+			{
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">First Name</th>
+								<th scope="col">Minit</th>
+								<th scope="col">Last Name</th>
+								<th scope="col">Job</th>
+								<th scope="col">Job Level</th>
+								<th scope="col">Publisher</th>
+								<th scope="col">Hire Date</th>
+								<th scope="col">Tools</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var emp in Model.EmployeeViewDTOs)
+							{
+								<tr>
+									<th scope="row">
+										<a asp-controller="Employees" asp-action="Detail" asp-route-id="@emp.EmpId">@emp.EmpId</a>
+									</th>
+									<td>@(emp.Fname ?? "Empty")</td>
+									<td>@(string.IsNullOrEmpty(emp.Minit) ? "-" : emp.Minit)</td>
+									<td>@(emp.Lname ?? "Empty")</td>
+									<td>@emp.JobId</td>
+									<td>@(emp.JobLvl.HasValue ? emp.JobLvl.Value.ToString() : "Empty")</td>
+									<td>@(emp.PubId ?? "Empty")</td>
+									<td>@(emp.HireDate != DateTime.MinValue ? emp.HireDate.ToString("dd/MM/yyyy") : "Empty")</td>
+
+									<td>
+										<a asp-controller="Employees" asp-action="Update" asp-route-id="@emp.EmpId" class="btn btn-sm btn-warning">
+											<i class="fa fa-edit"></i> Update
+										</a>
+
+										<a asp-controller="Employees" asp-action="Delete" asp-route-id="@emp.EmpId" class="btn btn-danger btn-sm delete-button">
+											<i class="fa fa-trash"></i> Delete
+										</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+
+					</table>
+				</div>
+
+				<!-- Paging Start -->
+				<nav>
+					<ul class="pagination">
+						@if (Model.CurrentPage > 1)
+						{
+							<li class="page-item">
+								<a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchString=@ViewBag.Search" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+						}
+
+						@for (var i = 1; i <= Model.TotalPages; i++)
+						{
+							<li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+								<a class="page-link" href="?page=@i&searchString=@ViewBag.Search">@i</a>
+							</li>
+						}
+
+						@if (Model.CurrentPage < Model.TotalPages)
+						{
+							<li class="page-item">
+								<a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchString=@ViewBag.Search" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						}
+					</ul>
+				</nav>
+				<!-- Paging End -->
+			}
+		</div>
+	</div>
+</div>
+

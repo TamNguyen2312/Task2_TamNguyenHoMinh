@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    ViewData["ActivePage"] = "Titles";
+}
+@model Task2.BLL.DTOs.TitleDTOs.TitleDetailDTO
+
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">Title Details</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>ID: @Model.TitleId</h5>
+                    <p><strong>Title:</strong> @Model.Title1</p>
+                    <p><strong>Type:</strong> @Model.Type</p>
+                    <p><strong>Publisher:</strong> @Model.PubId</p>
+                    <p><strong>Price:</strong> @Model.Price</p>
+                    <p><strong>Advance:</strong> @Model.Advance</p>
+                    <p><strong>Royalty:</strong> @Model.Royalty</p>
+                    <p><strong>YtdSale:</strong> @Model.YtdSales</p>
+                    <p><strong>Note:</strong> @Model.Notes</p>
+                    <p><strong>Published Date:</strong> @Model.Pubdate.ToString("dd/MM/yyyy")</p>
+
+                    <a asp-controller="Titles" asp-action="Update" asp-route-id="@Model.TitleId" class="btn btn-sm btn-warning">
+                        <i class="fa fa-edit"></i> Update
+                    </a>
+
+                    <a asp-controller="Titles" asp-action="Delete" asp-route-id="@Model.TitleId" class="btn btn-danger btn-sm delete-button">
+                        <i class="fa fa-trash"></i> Delete
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

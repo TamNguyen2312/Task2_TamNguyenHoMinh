@@ -39,7 +39,7 @@ namespace Task2.BLL.Services.Implement
                     var predicate = FilterHelper.BuildSearchExpression<Store>(search);
 
                     stores = await storeRepo.GetAllAsync(predicate,
-                        r => r.OrderBy(q => q.StorName),
+                        r => r.OrderBy(q => q.StorId),
                         false
                     );
                 }
@@ -48,7 +48,7 @@ namespace Task2.BLL.Services.Implement
 
                     stores = await storeRepo.GetAllAsync(
                         null,
-                        r => r.OrderBy(q => q.StorName),
+                        r => r.OrderBy(q => q.StorId),
                         false
                     );
 
@@ -70,10 +70,6 @@ namespace Task2.BLL.Services.Implement
                 Console.ResetColor();
                 return null;
             }
-            finally
-            {
-                unitOfWork.Dispose();
-            }
         }
 
 		public async Task<StoreDetailDTO> GetStoreByIdAsync(string id)
@@ -90,10 +86,6 @@ namespace Task2.BLL.Services.Implement
                 Console.WriteLine(ex.Message);
                 Console.ResetColor();
                 return null;
-			}
-			finally
-			{
-				unitOfWork.Dispose();
 			}
 		}
 
@@ -127,6 +119,53 @@ namespace Task2.BLL.Services.Implement
                 Console.WriteLine(ex.Message.ToString());
                 Console.ResetColor();
                 return null;
+            }
+        }
+
+        public async Task UpdateStoreAsync(StoreDetailDTO storeRequest)
+        {
+            try
+            {
+                using var transaction = unitOfWork.BeginTransactionAsync();
+
+                var storeRepo = unitOfWork.GetRepo<Store>();
+
+                var storeUpdate = mapper.Map<Store>(storeRequest);
+
+                await storeRepo.UpdateAsync(storeUpdate);
+
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollBackAsync();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+            }
+        }
+
+        public async Task<bool> DeleteStoreAsync(StoreDetailDTO storeRequest)
+        {
+            try
+            {
+                using var transaction = unitOfWork.BeginTransactionAsync();
+
+                var storeRepo = unitOfWork.GetRepo<Store>();
+                var store = mapper.Map<Store>(storeRequest);
+                await storeRepo.DeleteAsync(store);
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitTransactionAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollBackAsync();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message.ToString());
+                Console.ResetColor();
+                return false;
             }
         }
     }

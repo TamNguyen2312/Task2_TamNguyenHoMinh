@@ -29,24 +29,125 @@ namespace Task2.WebApplicationMVC.Controllers
 			return View(results);
 		}
 
-		public async Task<IActionResult> Create(StoreCreateRequestDTO storeRequest)
+		[HttpGet]
+		public IActionResult Create()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Create(StoreCreateRequestDTO storeCreateRequest)
+		{
+			try
+			{
+                if (!ModelState.IsValid)
+				{
+					return View(storeCreateRequest);
+				}
+				else
+				{
+					var result = await storesService.CreateStoreAsync(storeCreateRequest);
+					if(result == null)
+					{
+						return Redirect("/400");
+					}
+					else
+					{
+						return RedirectToAction("Detail", new {id = result.StorId});
+					}
+				}
+
+            }
+			catch (Exception ex)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine(ex.Message);
+				Console.ResetColor();
+				return Redirect("/400");
+			}
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Update(string id)
+		{
+			try
+			{
+				var store = await storesService.GetStoreByIdAsync(id);
+				if(store == null)
+				{
+					return Redirect("/404");
+				}
+				else
+				{
+					return View(store);
+				}
+			}
+			catch (Exception ex)
+			{
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return Redirect("/400");
+            }
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Update(StoreDetailDTO storeDetail)
 		{
 			try
 			{
 				if(!ModelState.IsValid)
 				{
-					return Redirect("/400");
+					return View(storeDetail);
 				}
-				var result = await storesService.CreateStoreAsync(storeRequest);
-				return View(result);
+				else
+				{
+					await storesService.UpdateStoreAsync(storeDetail);
+					return RedirectToAction("Detail", new { id = storeDetail.StorId });
+				}
 			}
 			catch (Exception ex)
 			{
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message.ToString());
+                Console.WriteLine(ex.Message);
                 Console.ResetColor();
-				return null;
+                return Redirect("/400");
             }
 		}
+
+		public async Task<IActionResult> Delete(string id)
+		{
+            try
+            {
+				var store = await storesService.GetStoreByIdAsync(id);
+				if(store == null)
+				{
+					return Redirect("/404");
+				}
+
+				if(store.Sales.Any())
+				{
+					TempData["ErrorMessage"] = "Cannot delete store. There are asscoiated sales";
+					return Redirect("/400");
+				}
+
+				var result = await storesService.DeleteStoreAsync(store); 
+                if (!result)
+                {
+                    return Redirect("/400");
+                }
+                else
+                {
+					return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+                return Redirect("/400");
+            }
+        }
 	}
 }

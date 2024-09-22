@@ -72,5 +72,17 @@
 	<!-- Template Javascript -->
 	<script src="~/js/main.js"></script>
 
+	<!-- Custom Script for Delete Confirmation -->
+	<script>
+		document.querySelectorAll('.delete-button').forEach(button => {
+			button.addEventListener('click', function (event) {
+				if (!confirm('Are you sure you want to delete this store?')) {
+					event.preventDefault(); // Ngăn không cho submit form nếu người dùng chọn "No"
+				}
+			});
+		});
+	</script>
 </body>
 </html>
+
+
